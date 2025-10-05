@@ -4,7 +4,8 @@ A secure password manager application built with Next.js featuring user authenti
 
 ## 🔗 Repository
 
-**GitHub**: [https://github.com/rakshakphogat/madquick-task](https://github.com/rakshakphogat/madquick-task)
+**GitHub**: [https://github.com/rakshakphogat/madquick-task]
+**Live Demo**: [https://madquick-task.vercel.app]
 
 ## Features
 
@@ -86,8 +87,8 @@ madquick-task/
 
    ```env
    MONGODB_URI=mongodb+srv://your-username:your-password@cluster.mongodb.net/password-manager
-   JWT_SECRET=your-super-secret-jwt-key-change--this-in-production
-   NODE_ENV=development
+   JWT_SECRET=your-super-secret-jwt-key
+   NODE_ENV=development || production
    ```
 
 5. **Start the development server**:
@@ -97,7 +98,7 @@ madquick-task/
    ```
 
 6. **Open your browser**:
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   Navigate to [http://localhost:3000]
 
 ### Build for Production
 
@@ -156,12 +157,11 @@ npm start
 
 ### Recent Improvements
 
-- **Complete Architecture Migration**: Migrated from Express.js to Next.js API routes for better Vercel compatibility
+- **Complete Architecture Migration**: Used Next.js API routes for better Vercel compatibility
 - **Enhanced clipboard functionality** with proper error handling and fallbacks
-- **Reduced password exposure time** by 15 seconds (from 30s to 15s)
+- **Reduced password exposure time** to 15 seconds
 - **Added visual feedback** for copy operations
 - **Implemented fallback methods** for better browser compatibility
-- **Fixed Vercel deployment issues** by using serverless architecture
 
 ### Security Considerations
 
