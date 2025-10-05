@@ -1,12 +1,16 @@
 # Madquick Task - Password Manager
 
-A secure password manager application built with Next.js and Node.js featuring user authentication, password generation, and encrypted vault storage.
+A secure password manager application built with Next.js featuring user authentication, password generation, and encrypted vault storage.
+
+## 🔗 Repository
+
+**GitHub**: [https://github.com/rakshakphogat/madquick-task](https://github.com/rakshakphogat/madquick-task)
 
 ## Features
 
-- **User Authentication**: Secure login and signup system
+- **User Authentication**: Secure login and signup system with JWT tokens
 - **Password Generator**: Customizable password generation with various options
-- **Secure Vault**: Encrypted storage for passwords and sensitive information
+- **Secure Vault**: Client-side encrypted storage for passwords and sensitive information
 - **Clipboard Integration**: Enhanced clipboard functionality with fallbacks
 - **Auto-clear**: Passwords automatically cleared from clipboard after 15 seconds
 - **Search**: Quick search through vault items
@@ -14,36 +18,38 @@ A secure password manager application built with Next.js and Node.js featuring u
 
 ## Tech Stack
 
-### Frontend
-
-- **Next.js 14** - React framework with App Router
+- **Next.js 15** - Full-stack React framework with App Router and API routes
 - **TypeScript** - Type-safe development
 - **Tailwind CSS** - Utility-first styling
-- **Crypto-JS** - Client-side encryption
+- **MongoDB** - Database with Mongoose ODM
+- **JWT** - Authentication tokens with HTTP-only cookies
+- **Crypto-JS** - Client-side AES encryption for password storage
+- **bcrypt** - Server-side password hashing
 
-### Backend
+## 🔐 Encryption & Security
 
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MongoDB** - Database
-- **TypeScript** - Type-safe development
-- **JWT** - Authentication tokens
+**Client-Side Encryption**: We use **Crypto-JS AES encryption** to encrypt passwords before storing them in the database. This ensures that even if the database is compromised, stored passwords remain encrypted and unreadable. The encryption happens in the browser using a master key, providing an additional layer of security beyond server-side protections.
 
 ## Project Structure
 
 ```
 madquick-task/
-├── frontend/          # Next.js frontend application
-│   ├── app/          # App router pages
-│   ├── components/   # Reusable components
+├── my-app/                 # Next.js full-stack application
+│   ├── app/               # App router pages and API routes
+│   │   ├── api/          # Serverless API endpoints
+│   │   │   ├── auth/     # Authentication routes
+│   │   │   └── vault/    # Vault management routes
+│   │   ├── auth/         # Authentication pages
+│   │   ├── dashboard/    # Dashboard page
+│   │   └── page.tsx      # Main application
+│   ├── lib/              # Utility functions
+│   │   ├── auth.ts       # JWT authentication
+│   │   └── mongodb.ts    # Database connection
+│   ├── models/           # MongoDB models
+│   │   ├── User.ts       # User model
+│   │   └── VaultItem.ts  # Vault item model
 │   └── package.json
-├── backend/          # Node.js backend API
-│   ├── src/
-│   │   ├── models/   # Database models
-│   │   ├── routes/   # API routes
-│   │   └── server.ts # Server entry point
-│   └── package.json
-└── .gitignore        # Git ignore rules
+└── README.md
 ```
 
 ## Installation & Setup
@@ -54,63 +60,61 @@ madquick-task/
 - MongoDB (local or cloud instance)
 - npm or yarn
 
-### Backend Setup
+### Quick Start
 
-1. Navigate to the backend directory:
+1. **Clone the repository**:
 
    ```bash
-   cd backend
+   git clone https://github.com/rakshakphogat/madquick-task.git
+   cd madquick-task
    ```
 
-2. Install dependencies:
+2. **Navigate to the application directory**:
+
+   ```bash
+   cd my-app
+   ```
+
+3. **Install dependencies**:
 
    ```bash
    npm install
    ```
 
-3. Create a `.env` file with the following variables:
+4. **Create environment file**:
+   Create a `.env` file in the `my-app` directory:
 
    ```env
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/madquick-password-manager
-   JWT_SECRET=your-super-secret-jwt-key-here
+   MONGODB_URI=mongodb+srv://your-username:your-password@cluster.mongodb.net/password-manager
+   JWT_SECRET=your-super-secret-jwt-key-change--this-in-production
+   NODE_ENV=development
    ```
 
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
+5. **Start the development server**:
 
    ```bash
    npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+6. **Open your browser**:
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+### Build for Production
+
+```bash
+npm run build
+npm start
+```
 
 ## Features Implemented
 
 ### 🔐 Security Features
 
-- Client-side encryption for stored passwords
-- JWT-based authentication
-- Secure password generation with customizable options
-- Auto-clear clipboard functionality
+- **Client-side AES encryption** for stored passwords using Crypto-JS
+- **JWT-based authentication** with HTTP-only cookies
+- **bcrypt password hashing** for user account passwords
+- **Secure password generation** with customizable options
+- **Auto-clear clipboard functionality** (15-second timeout)
 
 ### 🎯 Clipboard Enhancements
 
@@ -123,7 +127,14 @@ madquick-task/
 
 - CRUD operations for vault items
 - Search functionality across titles, usernames, and URLs
-- Encrypted storage of sensitive information
+- Client-side encrypted storage of sensitive information
+- Real-time data synchronization
+
+### 🚀 Architecture
+
+- **Serverless API Routes**: Next.js API routes for seamless deployment
+- **MongoDB Connection Pooling**: Optimized for serverless environments
+- **Full-stack TypeScript**: End-to-end type safety
 
 ## API Endpoints
 
@@ -145,27 +156,73 @@ madquick-task/
 
 ### Recent Improvements
 
-- Enhanced clipboard functionality with proper error handling
-- Reduced password exposure time by 15 seconds
-- Added visual feedback for copy operations
-- Implemented fallback methods for better browser compatibility
+- **Complete Architecture Migration**: Migrated from Express.js to Next.js API routes for better Vercel compatibility
+- **Enhanced clipboard functionality** with proper error handling and fallbacks
+- **Reduced password exposure time** by 15 seconds (from 30s to 15s)
+- **Added visual feedback** for copy operations
+- **Implemented fallback methods** for better browser compatibility
+- **Fixed Vercel deployment issues** by using serverless architecture
 
 ### Security Considerations
 
-- Environment variables are properly excluded via `.gitignore`
-- Passwords are encrypted before storage
-- JWT tokens are used for secure authentication
-- Auto-clear functionality minimizes clipboard exposure
+- **Environment variables** are properly excluded via `.gitignore`
+- **Client-side password encryption** using AES before database storage
+- **JWT tokens** stored in HTTP-only cookies for security
+- **Auto-clear functionality** minimizes clipboard exposure
+- **bcrypt hashing** for user authentication passwords
+
+### Crypto Implementation Details
+
+**Why Crypto-JS AES Encryption?**
+We implemented client-side AES encryption using Crypto-JS to ensure that sensitive passwords are encrypted before being sent to the server. This adds an extra security layer - even if someone gains access to the database or intercepts network traffic, the stored passwords remain encrypted and unreadable without the encryption key.
 
 ## Deployment
 
-The application is ready for deployment on platforms like:
+The application is designed for **Vercel deployment** with serverless architecture:
 
-- **Frontend**: Vercel, Netlify
-- **Backend**: Railway, Render, Heroku
-- **Database**: MongoDB Atlas
+- **Vercel**: Optimal deployment platform (recommended)
+- **Netlify**: Alternative deployment option
+- **Database**: MongoDB Atlas (cloud)
 
-Make sure to set up environment variables on your chosen platform.
+### Vercel Deployment Steps
+
+1. Push your code to GitHub
+2. Connect your GitHub repo to Vercel
+3. Set environment variables in Vercel dashboard:
+   - `MONGODB_URI`
+   - `JWT_SECRET`
+   - `NODE_ENV=production`
+4. Deploy automatically on push
+
+### Environment Variables Required
+
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+NODE_ENV=production
+```
+
+## Technology Choices & Implementation
+
+### Why Next.js Full-Stack?
+
+- **Serverless Architecture**: Perfect for Vercel deployment, eliminates server management
+- **API Routes**: Built-in serverless functions replace traditional Express.js backend
+- **Performance**: Optimized builds, automatic code splitting, and edge functions
+- **TypeScript Integration**: Seamless full-stack type safety
+
+### Why Crypto-JS for Client-Side Encryption?
+
+- **Zero-Trust Security**: Passwords encrypted before leaving the browser
+- **AES-256 Encryption**: Industry-standard encryption algorithm
+- **Browser Compatibility**: Works across all modern browsers
+- **Lightweight**: Minimal bundle size impact
+
+### Why MongoDB with Mongoose?
+
+- **Flexible Schema**: Easy to modify data structures as features evolve
+- **Serverless Friendly**: Connection pooling optimized for serverless functions
+- **Atlas Integration**: Seamless cloud deployment and scaling
 
 ## Contributing
 

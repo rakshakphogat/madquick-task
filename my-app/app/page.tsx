@@ -580,7 +580,7 @@ const VaultView = ({
               notes: "",
             });
           }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+          className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-4 py-2 rounded"
         >
           Add New
         </button>
@@ -795,7 +795,7 @@ export default function PasswordManager() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/auth/me", {
+        const response = await fetch("/api/auth/me", {
           credentials: "include",
         });
 
@@ -828,7 +828,7 @@ export default function PasswordManager() {
         : authForm;
 
     try {
-      const response = await fetch(`http://localhost:5000${url}`, {
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -851,7 +851,7 @@ export default function PasswordManager() {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:5000/api/auth/logout", {
+      await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -865,7 +865,7 @@ export default function PasswordManager() {
 
   const loadVaultItems = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/vault", {
+      const response = await fetch("/api/vault", {
         credentials: "include",
       });
 
@@ -873,7 +873,7 @@ export default function PasswordManager() {
         const data = await response.json();
         if (data.success) {
           // Decrypt passwords for display
-          const decryptedItems = data.vaultItems.map((item: VaultItem) => ({
+          const decryptedItems = data.data.map((item: VaultItem) => ({
             ...item,
             password: decryptData(item.password),
           }));
@@ -894,9 +894,7 @@ export default function PasswordManager() {
       password: encryptData(vaultForm.password),
     };
 
-    const url = editingItem
-      ? `http://localhost:5000/api/vault/${editingItem._id}`
-      : "http://localhost:5000/api/vault";
+    const url = editingItem ? `/api/vault/${editingItem._id}` : "/api/vault";
 
     const method = editingItem ? "PUT" : "POST";
 
@@ -929,7 +927,7 @@ export default function PasswordManager() {
     if (!confirm("Are you sure you want to delete this item?")) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/vault/${id}`, {
+      const response = await fetch(`/api/vault/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

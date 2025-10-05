@@ -54,7 +54,6 @@ const vaultItemSchema = new mongoose.Schema(
 // Index for faster queries
 vaultItemSchema.index({ userId: 1, createdAt: -1 });
 
-export const VaultItem = mongoose.model<IVaultItem>(
-  "VaultItem",
-  vaultItemSchema
-);
+export const VaultItem =
+  mongoose.models.VaultItem ||
+  mongoose.model<IVaultItem>("VaultItem", vaultItemSchema);
