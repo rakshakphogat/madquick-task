@@ -4,9 +4,13 @@ import { User } from "../models/User.js";
 
 const router = express.Router();
 
-// JWT Secret
-const JWT_SECRET =
-  process.env.JWT_SECRET || "your-secret-key-change-in-production";
+// JWT Secret validation
+if (!process.env.JWT_SECRET) {
+  console.error("JWT_SECRET environment variable is required");
+  process.exit(1);
+}
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Generate JWT token
 const generateToken = (userId: string) => {

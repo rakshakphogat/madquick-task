@@ -26,9 +26,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/vault", vaultRoutes);
 
 // MongoDB connection
-const MONGODB_URI =
-  process.env.MONGODB_URI ||
-  "mongodb+srv://rakshakphogat_db_user:fPzShR33TYCWPHIn@cluster0.kkzcktx.mongodb.net/password-manager";
+if (!process.env.MONGODB_URI) {
+  console.error("MONGODB_URI environment variable is required");
+  process.exit(1);
+}
+
+const MONGODB_URI = process.env.MONGODB_URI;
 
 mongoose
   .connect(MONGODB_URI)

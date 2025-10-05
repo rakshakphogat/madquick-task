@@ -6,6 +6,9 @@
 .env.production.local
 .env.*
 
+# Allow example environment files
+!.env.example
+
 # Node.js
 node_modules/
 npm-debug.log*
