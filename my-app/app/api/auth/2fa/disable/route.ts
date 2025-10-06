@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { setCorsHeaders, verifyToken } from "../../../../lib/auth";
+import { setCorsHeaders, verifyToken } from "../../../../../lib/auth";
+import connectToDatabase from "../../../../../lib/mongodb";
+import { User } from "../../../../../models/User";
 
-export async function GET(request: NextRequest) {
+// Disable 2FA
+export async function POST(request: NextRequest) {
   try {
-    const user = await verifyToken(request);
+    await connectToDatabase();
 
+    const user = await verifyToken(request);
     if (!user) {
       const response = NextResponse.json(
         {
@@ -16,19 +20,20 @@ export async function GET(request: NextRequest) {
       return setCorsHeaders(response);
     }
 
+    // Disable 2FA for the user
+    await User.findByIdAndUpdate(user._id, {
+      twoFactorEnabled: false,
+      twoFactorSecret: null,
+    });
+
     const response = NextResponse.json({
       success: true,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        twoFactorEnabled: user.twoFactorEnabled || false,
-      },
+      message: "2FA disabled successfully",
     });
 
     return setCorsHeaders(response);
   } catch (error) {
-    console.error("Auth check error:", error);
+    console.error("2FA disable error:", error);
     const response = NextResponse.json(
       {
         success: false,

@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         message: "User created successfully",
+        token: token,
         user: {
           id: user._id,
           name: user.name,

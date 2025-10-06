@@ -5,6 +5,8 @@ export interface IUser extends mongoose.Document {
   name: string;
   email: string;
   password: string;
+  twoFactorSecret?: string;
+  twoFactorEnabled: boolean;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -32,6 +34,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters long"],
+    },
+    twoFactorSecret: {
+      type: String,
+      required: false,
+    },
+    twoFactorEnabled: {
+      type: Boolean,
+      default: false,
     },
   },
   {

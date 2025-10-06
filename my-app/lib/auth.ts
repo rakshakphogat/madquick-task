@@ -72,10 +72,13 @@ export const verifyToken = async (request: NextRequest) => {
 
 // CORS headers for API responses
 export const setCorsHeaders = (response: NextResponse) => {
-  response.headers.set(
-    "Access-Control-Allow-Origin",
-    "https://madquick-task-txle.vercel.app"
-  );
+  // In development, allow any origin; in production, only allow the deployed domain
+  const origin =
+    process.env.NODE_ENV === "development"
+      ? "*"
+      : "https://madquick-task-txle.vercel.app";
+
+  response.headers.set("Access-Control-Allow-Origin", origin);
   response.headers.set(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
