@@ -125,7 +125,7 @@ export default function PasswordManager() {
       setCurrentView("vault");
       setAuthForm({ name: "", email: "", password: "", totpToken: "" });
       setRequires2FA(false);
-    } catch (error) {
+    } catch {
       setAuthError("Network error occurred");
     }
   };
@@ -222,7 +222,7 @@ export default function PasswordManager() {
 
   const handleSetup2FA = async () => {
     try {
-      const res = await fetch("/api/auth/setup-2fa", {
+      const res = await fetch("/api/auth/2fa/setup", {
         method: "POST",
         credentials: "include",
       });
@@ -237,7 +237,7 @@ export default function PasswordManager() {
 
   const handleVerify2FA = async () => {
     try {
-      const res = await fetch("/api/auth/verify-2fa", {
+      const res = await fetch("/api/auth/2fa/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -263,7 +263,7 @@ export default function PasswordManager() {
   const handleDisable2FA = async () => {
     if (confirm("Are you sure you want to disable 2FA?")) {
       try {
-        const res = await fetch("/api/auth/disable-2fa", {
+        const res = await fetch("/api/auth/2fa/disable", {
           method: "POST",
           credentials: "include",
         });
